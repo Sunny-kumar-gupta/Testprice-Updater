@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Department Wise Test Price Updater</title>
+
+  <!-- SheetJS Library for reading/writing Excel files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <div class="header">
+    <div class="badge">Lab Management Tool</div>
+    <h1>Department Wise<br><span>Test Price Updater</span></h1>
+    <p>Upload → Set rules → Download updated Excel</p>
+  </div>
+
+  <!-- ── Toast Area (errors / info messages) ───────────── -->
+  <div id="toast-area"></div>
+
+  <!-- ── Step 1 : Upload Excel ──────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span class="num">1</span> Upload Excel File</div>
+
+    <div class="upload-zone" id="dropZone">
+      <input type="file" id="fileInput" accept=".xlsx,.xls" />
+      <span class="upload-icon">📂</span>
+      <strong>Drag &amp; drop or click to browse</strong>
+      <p>Accepted: .xlsx, .xls</p>
+    </div>
+
+    <!-- Shown after file is chosen -->
+    <div class="file-pill" id="filePill">
+      <span>📄</span>
+      <span id="fileName">—</span>
+      <button class="remove-btn" id="removeFileBtn" title="Remove file">✕</button>
+    </div>
+
+    <!-- Expected columns legend -->
+    <div class="columns-hint">
+      <span class="col-tag">Test Id</span>
+      <span class="col-tag">Test Name</span>
+      <span class="col-tag">Test Code</span>
+      <span class="col-tag">Department</span>
+      <span class="col-tag highlight">Test Price ✎</span>
+    </div>
+    <p class="col-note">
+      Only the <span class="orange">Test Price</span> column will be modified. All other columns are untouched.
+    </p>
+  </div>
+
+  <!-- ── Step 2 : Enter Rules ───────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span class="num">2</span> Enter Department Rules</div>
+
+    <label class="field-label" for="rulesInput">Percentage Rules</label>
+    <textarea id="rulesInput" placeholder="CLINICAL PATHOLOGY - 30%
+BIOCHEMISTRY - 50%
+MICROBIOLOGY - 20%
+HEMATOLOGY - 40%"></textarea>
+
+    <p class="rules-hint">
+      Format: <span>DEPARTMENT NAME - PERCENTAGE%</span> &nbsp;·&nbsp; One rule per line &nbsp;·&nbsp; Case-insensitive
+    </p>
+  </div>
+
+  <!-- ── Step 3 : Process ───────────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span class="num">3</span> Process &amp; Download</div>
+    <p class="process-hint">
+      Click the button below to apply the rules and generate the updated Excel file.
+    </p>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="processBtn">
+        ⚡ Apply Price Rules
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Result Summary + Download ─────────────────────── -->
+  <div id="result-card">
+    <h3>✅ Processing Complete</h3>
+
+    <div class="stats-grid">
+      <div class="stat-box"><div class="val" id="stat-total">—</div><div class="lbl">Total Rows</div></div>
+      <div class="stat-box"><div class="val" id="stat-updated">—</div><div class="lbl">Rows Updated</div></div>
+      <div class="stat-box"><div class="val" id="stat-skipped">—</div><div class="lbl">Rows Skipped</div></div>
+      <div class="stat-box"><div class="val" id="stat-depts">—</div><div class="lbl">Depts Matched</div></div>
+    </div>
+
+    <table class="dept-table" id="deptBreakdown">
+      <thead>
+        <tr>
+          <th>Department</th>
+          <th>Rule</th>
+          <th>Rows Updated</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="btn-row">
+      <button class="btn btn-success" id="downloadBtn">
+        ⬇ Download Updated_Test_Prices.xlsx
+      </button>
+    </div>
+  </div>
+
+  <!-- External JavaScript -->
+  <script src="assets/app.js"></script>
+
+</body>
+</html>
